@@ -10,9 +10,9 @@ from sklearn.decomposition import PCA
 from sklearn.tree import DecisionTreeClassifier, export_graphviz
 import matplotlib.pyplot as plt
 
-st.title("Streamlit example")
+st.title("Streamlit App")
 st.write("""
-         # Explore different classifier
+         # Explore different classifiers
          Which one is the best?
          """)
 
