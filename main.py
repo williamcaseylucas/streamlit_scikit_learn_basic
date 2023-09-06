@@ -123,39 +123,20 @@ if classifier_name == "Decision Tree":
   st.title("Decision Tree Visualization")
   graph = export_graphviz(clf, out_file=None, filled=True, special_characters=True)
   st.graphviz_chart(graph)
-  
-# if classifier_name == 'Random Forest':
-#   st.title("Random Forest Visualization")
-#   st.write(f'estimators for random forest: {clf.estimators_}')
-#   for idx, tree in enumerate(clf.estimators_):
-#     graph = export_graphviz(tree, out_file=None, filled=True)
-#     st.subheader(f'Decision Tree {idx + 1}')
-#     st.graphviz_chart(graph)
-
 
 if classifier_name == "Random Forest":
     st.write("Random Forest consists of multiple Decision Trees.")
     st.write(f"Number of trees in the Random Forest: {len(clf.estimators_)}")
     
-    # Define the number of columns you want to display the trees
-    # num_columns = 3  # You can adjust this as needed
     num_columns = st.sidebar.slider('Select Number of Columns', 1, 5)
     
-    # Calculate the number of trees per column
-    num_trees_per_column = len(clf.estimators_) // num_columns
-    
-    for i in range(0, len(clf.estimators_), num_trees_per_column):
-        # Create a new column for each set of trees
-        trees_subset = clf.estimators_[i:i + num_trees_per_column]
-        col = st.columns(num_columns)
-        
-        # st.write(f'trees_subset', trees_subset)
+    # data: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    col = st.columns(num_columns)
 
-        for idx, tree in enumerate(trees_subset):
-          if idx < len(col):
-            with col[idx]:
-                graph = export_graphviz(tree, out_file=None, 
-                                            filled=True, rounded=True, 
-                                            special_characters=True)
-                st.subheader(f"Decision Tree {i + idx + 1}")
-                st.graphviz_chart(graph)
+    for idx, tree in enumerate(clf.estimators_):
+        with col[idx % num_columns]:
+          graph = export_graphviz(tree, out_file=None, 
+                                    filled=True, rounded=True, 
+                                    special_characters=True)
+          st.subheader(f"Decision Tree {idx + 1}")
+          st.graphviz_chart(graph)
